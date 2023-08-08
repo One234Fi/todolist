@@ -1,31 +1,22 @@
 package One234Fi;
 
-import com.sun.net.httpserver.HttpServer;
-
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.InetSocketAddress;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Basic rest api
  */
+@SpringBootApplication
+@RestController
 public class App {
-    public static void main(String[] args) throws IOException {
-        HttpServer server = HttpServer.create(new InetSocketAddress(8081), 0);
+    @RequestMapping("/")
+    String home() {
+        return "Hello World!";
+    }
 
-        server.createContext("/api/greeting", (exchange -> {
-            if ("GET".equals(exchange.getRequestMethod())) {
-                String responseText = "Hello World!\n";
-                exchange.sendResponseHeaders(200, responseText.getBytes().length);
-                OutputStream output = exchange.getResponseBody();
-                output.write(responseText.getBytes());
-                output.flush();
-            } else {
-                exchange.sendResponseHeaders(405, -1);
-            }
-            exchange.close();
-        }));
-
-        server.start();
+    public static void main(String[] args) {
+        SpringApplication.run(App.class, args);
     }
 }
