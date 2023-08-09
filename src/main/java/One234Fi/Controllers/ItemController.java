@@ -1,13 +1,16 @@
 package One234Fi.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import One234Fi.Entities.Item;
@@ -19,44 +22,49 @@ public class ItemController {
     @Autowired
     private ItemRepository itemRepository;
 
-    @GetMapping("")
-    public @ResponseBody Iterable<Item> getItems() {
-        return itemRepository.findAll();
+    public ItemRepository getRepo() {
+        return itemRepository;
     }
 
-    @GetMapping("")
-    public @ResponseBody Item getItem(@RequestParam Integer id) { 
-        Item item = itemRepository.findById(id).orElse(null);
-        return item; 
+    @GetMapping(value = "")
+    public ResponseEntity<Iterable<Item>> get() {
+        // /items
+        return new ResponseEntity<Iterable<Item>>(itemRepository.findAll(), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<Item> get(@PathVariable(value = "id") int id) { 
+        // /items/#
+        Item item = itemRepository.findById(Integer.valueOf(id)).orElse(null);
+        return new ResponseEntity<Item>(item, HttpStatus.OK);
     }
 
     @PostMapping("")
-    public @ResponseBody String post(@RequestParam String title, @RequestParam String body) { 
-        Item newItem = new Item();
-        newItem.setTitle(title);
-        newItem.setBody(body);
-        itemRepository.save(newItem);
-        return "posted an item!\n"; 
+    public ResponseEntity<Void> post(@RequestBody Item item) {
+        itemRepository.save(item);
+        
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
-    @PutMapping("")
-    public @ResponseBody String putItem(@RequestParam Integer id, @RequestParam Item item) {
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> put(@PathVariable int id, @RequestBody Item item) {
         Item itemToChange = itemRepository.findById(id).get();
-        if (item.getBody() != null) {
-            itemToChange.setBody(item.getBody());
-        }
         if (item.getTitle() != null) {
             itemToChange.setTitle(item.getTitle());
         }
+        if (item.getBody() != null) {
+            itemToChange.setBody(item.getBody());
+        }
         itemRepository.save(itemToChange);
 
-        return "updated an item!\n"; 
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
-    @DeleteMapping("")
-    public String deleteItem(@RequestParam Integer id) { 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable int id) { 
+        // items/#
         itemRepository.deleteById(id);
 
-        return "deleted an item!"; 
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 }
