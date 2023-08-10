@@ -1,17 +1,14 @@
 package One234Fi;
 
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import reactor.core.publisher.Mono;
+
+/**
+ * Client class provides methods to target the item api
+ */
 
 @Component
 public class Client {
@@ -21,35 +18,47 @@ public class Client {
         this.client = builder.baseUrl("http://localhost:8080").build();
     }
 
-    public Item get(int id) {
+    public Mono<Item> get(int id) {
         return this.client.get().uri("/items/" + id).accept(MediaType.APPLICATION_JSON)
             .retrieve()
-            .bodyToMono(Item.class).block();
+            .bodyToMono(Item.class);
     }
     
-    public List<Item> get() {
-            Mono <Object[]> response = this.client.get().uri("/items").accept(MediaType.APPLICATION_JSON)
+    public Mono<Item[]> get() {
+        return this.client.get().uri("/items").accept(MediaType.APPLICATION_JSON)
             .retrieve()
-            .bodyToMono(Object[].class).log();
+            .bodyToMono(Item[].class).log();
 
-            Object[] obs = response.block();
+        //Object[] obs = response.block();
 
-            ObjectMapper mapper = new ObjectMapper();
-            return Arrays.stream(obs)
-                .map(object -> mapper.convertValue(object, Item.class))
-                .collect(Collectors.toList());
+        //ObjectMapper mapper = new ObjectMapper();
+        //return Arrays.stream(obs)
+        //    .map(object -> mapper.convertValue(object, Item.class))
+        //    .collect(Collectors.toList());
     }
 
-    public void post() {
-
+    public Mono<Void> post(Item item) {
+       // Mono<Item> itemToPost = Mono.just(item);
+            
+        return this.client.post().uri("/items")
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(item)
+            .retrieve()
+            .bodyToMono(Void.class);
     }
 
-    public void put(int id) {
-
+    public Mono<Void> put(int id, Item item) {
+        return this.client.put().uri("/items/{id}", id)
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(item)
+            .retrieve()
+            .bodyToMono(Void.class);
     }
 
-    public void delete(int id) {
-
+    public Mono<Void> delete(int id) {
+        return this.client.delete().uri("/items/{id}", id)
+            .retrieve()
+            .bodyToMono(Void.class);
     }
 
 }

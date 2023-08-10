@@ -1,5 +1,10 @@
 package One234Fi;
 
+/**
+ * Item class provides a definition for parsing items from Json
+ *
+ */
+
 public class Item {
     private Integer id;
     private String title;
