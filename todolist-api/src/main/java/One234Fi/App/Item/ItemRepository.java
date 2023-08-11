@@ -1,8 +1,6 @@
-package One234Fi.Repositories;
+package One234Fi.App.Item;
 
 import org.springframework.data.repository.CrudRepository;
-
-import One234Fi.Entities.Item;
 
 public interface ItemRepository extends CrudRepository<Item, Integer> {
 

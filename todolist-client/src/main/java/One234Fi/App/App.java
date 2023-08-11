@@ -1,15 +1,14 @@
-package One234Fi;
+package One234Fi.App;
 
 import java.util.Scanner;
-import java.util.List;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
+import One234Fi.App.Client.*;
 
 /**
  * Client main class that handles behaviour

@@ -1,4 +1,4 @@
-package One234Fi.Entities;
+package One234Fi.App.Item;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

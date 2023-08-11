@@ -1,4 +1,4 @@
-package One234Fi;
+package One234Fi.App.Client;
 
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
