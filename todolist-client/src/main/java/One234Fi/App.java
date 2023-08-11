@@ -69,7 +69,7 @@ public class App {
         newItem.setTitle(title);
         newItem.setBody(body);
 
-        client.post(newItem);
+        client.post(newItem).block();
         items.add(newItem);
     }
 
@@ -112,7 +112,7 @@ public class App {
         rItem.setTitle(title);
         rItem.setBody(body);
 
-        client.put(id, rItem);
+        client.put(id, rItem).block();
         rItem = client.get(id).block();
 
         items.set(index, rItem);
@@ -141,7 +141,7 @@ public class App {
         }
 
         items.remove(index);
-        client.delete(id);
+        client.delete(id).block();
     }
 
     private static boolean prompt() {
