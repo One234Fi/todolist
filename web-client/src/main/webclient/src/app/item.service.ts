@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Item } from './item';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,27 +13,21 @@ export class ItemService {
       'Content-Type': 'application/json',
     }),
   };
-  constructor(private httpClient: HttpClient, private items: Item[]) { }
+  constructor(private httpClient: HttpClient) { }
 
   // GET
-  getItems() {
-    this.httpClient.get<Item[]>(this.baseurl + '/items')
-      .subscribe(data => {
-      this.items = data;
-    });
+  getItems(): Observable<Item[]> {
+    return this.httpClient.get<Item[]>(this.baseurl + '/items');
   }
 
   // GET id
-  getItem(id: number) {
-    this.httpClient.get<Item>(this.baseurl + '/items/' + id)
-      .subscribe(data => {
-      this.items.push(data);
-    });
+  getItem(id: number): Observable<Item> {
+    return this.httpClient.get<Item>(this.baseurl + '/items/' + id);
   }
 
   // POST
-  addItem(item: Item) {
-    this.httpClient.post<Item>(
+  addItem(item: Item): Observable<Item> {
+    return this.httpClient.post<Item>(
       this.baseurl + '/items',
       JSON.stringify(item),
       this.httpOptions
@@ -40,8 +35,8 @@ export class ItemService {
   }
 
   // PUT
-  updateItem(id: number, item: Item) {
-    this.httpClient.put<Item>(
+  updateItem(id: number, item: Item): Observable<Item> {
+    return this.httpClient.put<Item>(
       this.baseurl + '/items/' + id,
       JSON.stringify(item),
       this.httpOptions
@@ -49,8 +44,8 @@ export class ItemService {
   }
 
   // DELETE
-  deleteItem(id: number) {
-    this.httpClient.delete<Item>(this.baseurl + '/items/' + id, this.httpOptions);
+  deleteItem(id: number): Observable<Item> {
+    return this.httpClient.delete<Item>(this.baseurl + '/items/' + id, this.httpOptions);
   }
 
 }
