@@ -1,10 +1,14 @@
-<label for="item_title">Title: </label>
-<input id="item_title" type="text" [formControl]="item_title">
+<div>
+  <label for="item_title">Title: </label>
+  <br>
+  <input id="item_title" type="text" [formControl]="item_title">
+  <br>
+  <label for="item_body">Body: </label>
+  <br>
+  <input id="item_body" type="text" [formControl]="item_body">
+  <br>
+  <!--<p>Data: <br> {{ item_title.value }} <br> {{ item_body.value }}</p>-->
 
-<label for="item_body">Body: </label>
-<input id="item_body" type="text" [formControl]="item_body">
-
-<p>Data: <br> {{ item_title.value }} <br> {{ item_body.value }}</p>
-
-<button type="button" (click)="addItem()">Add Item</button>
-<button type="button" (click)="cancel()">Go Back</button>
+  <button type="button" (click)="addItem()">Add Item</button>
+  <button type="button" (click)="cancel()">Go Back</button>
+</div>
