@@ -8,9 +8,9 @@
                     <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Item Title</th>
-                            <th scope="col">Item Body</th>
-                            <th scope="col">Action</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Body</th>
+                            <th scope="col">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -23,6 +23,7 @@
                                 <button type="button" class="btn btn-danger btn-sm" (click)="deleteItem(item)">Remove</button>
                             </td>
                         </tr>
+                        <button type="button" [routerLink]="['']">Add Item</button>
                     </tbody>
                 </table>
             </div>

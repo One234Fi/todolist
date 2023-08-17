@@ -1,35 +1,28 @@
-import { Component, NgZone, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ItemService } from '../item.service';
+import { Item } from '../item';
 
 @Component({
   selector: 'app-add-item',
   templateUrl: './add-item.component.html',
   styleUrls: ['./add-item.component.css']
 })
-export class AddItemComponent implements OnInit {
-  itemForm: FormGroup;
-  items: any = [];
-  ngOnInit() {
-    this.addItem();
-  }
-  constructor(public formBuilder: FormBuilder,
-              private ngZone: NgZone,
-              private router: Router,
-              public itemService: ItemService) {}
+export class AddItemComponent {
+  item_title = new FormControl('');
+  item_body = new FormControl('');
+
+  constructor(private router: Router, public itemService: ItemService) {}
 
   addItem() {
-    this.itemForm = this.formBuilder.group({
-      item_title: [''],
-      item_body: [''],
+    let newItem: Item = { id: 0, title: this.item_title.value, body: this.item_body.value };
+    this.itemService.addItem(newItem).subscribe(() => {
+      this.router.navigateByUrl("items-list");
     });
   }
 
-  submitForm() {
-    this.itemService.addItem(this.itemForm.value).subscribe((res) => {
-      console.log("adding item");
-      this.ngZone.run(() => this.router.navigateByUrl('/items-list'));
-    });
+  cancel() {
+    this.router.navigateByUrl("items-list");
   }
 }
